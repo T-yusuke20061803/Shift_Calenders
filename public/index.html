@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shift Scheduler</title>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shift Scheduler</h1>
+    <div id='calendar'></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                editable: true,
+                selectable: true,
+                events: async function(fetchInfo, successCallback, failureCallback) {
+                    const response = await fetch('http://localhost:3000/shifts');
+                    const shifts = await response.json();
+                    successCallback(shifts.map(shift => ({
+                        title: shift.name,
+                        start: `${shift.date}T${shift.start}`,
+                        end: `${shift.date}T${shift.end}`
+                    })));
+                },
+                select: async function(info) {
+                    const name = prompt('Enter shift name:');
+                    if (name) {
+                        const shift = {
+                            name,
+                            date: info.startStr.split('T')[0],
+                            start: info.startStr.split('T')[1] || '00:00',
+                            end: info.endStr.split('T')[1] || '23:59'
+                        };
+
+                        const response = await fetch('http://localhost:3000/shifts', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(shift)
+                        });
+
+                        const newShift = await response.json();
+                        calendar.addEvent({
+                            title: newShift.name,
+                            start: `${newShift.date}T${newShift.start}`,
+                            end: `${newShift.date}T${newShift.end}`
+                        });
+                    }
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+</body>
+</html>

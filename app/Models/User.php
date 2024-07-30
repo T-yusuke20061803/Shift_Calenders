@@ -41,4 +41,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function makeAdmin()
+    {
+        $this->is_reader = true;
+        $this->save();
+    }
+
 }

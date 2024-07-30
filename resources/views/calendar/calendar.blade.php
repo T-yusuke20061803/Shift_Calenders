@@ -7,10 +7,15 @@
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js']) <!-- vite用の記述忘れずに -->
+         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     </head>
     <body>
-        <!-- 以下のdivタグ内にカレンダーを表示 -->
-        <div id='calendar'></div>
+        <button id='button1' aria-pressed="true" onclick="toggleCalendar()">用途切り替え</button>
+        <!-- 以下のdivタグ内にカレンダーを表示 通寿とシフト用カレンダー用のdiv -->
+        <div id='calendar-regular'></div>
+        <div id='calendar-shift' style='display: none;'></div>
+        
         <!-- カレンダー新規追加モーダル --><!-- modaｌをmodelに変更した-->
          <div id="modal-add" class="modal">
             <div class="modal-contents">

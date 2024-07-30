@@ -43,4 +43,9 @@ class ShiftController extends Controller
         $shift->end_date = date('Y-m-d', $request->input('end_date') / 1000);
         $shift->save();
     }
+    
+    public function up(Request $request, Shift $event)
+    {
+        
+    }
 }
