@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Auth;
 
 class EventController extends Controller
 {
@@ -20,6 +21,7 @@ class EventController extends Controller
             'end_date' => 'required',
             'event_color' => 'required',
         ]);
+        $userid = Auth::user()->id;
         //登録処理
         $event->event_title = $request->input('event_title');
         $event->event_body = $request->input('event_body');
@@ -27,6 +29,7 @@ class EventController extends Controller
         $event->end_date = date("Y-m-d", strtotime("{$request->input('end_date')} +1 day")); // FullCalendarが登録する終了日は仕様で1日ずれるので、その修正を行っている
         $event->event_color = $request->input('event_color');
         $event->event_border_color = $request->input('event_color'); 
+        $event->user_id = $userid;
         $event->save();
         
         return redirect(route("show"));
@@ -37,6 +40,9 @@ class EventController extends Controller
             'start_date'=>'required|integer',
             'end_date'=>'required|integer'
         ]);
+        
+        $userid=Auth::user()->id;
+        
         //カレンダーの表示期間
         $start_date = date('Y-m-d', $request->input('start_date') / 1000);
         $end_date = date('Y-m-d', $request->input('end_date') / 1000);
@@ -52,6 +58,7 @@ class EventController extends Controller
                 'event_color as backgroundColor',
                 'event_border_color as borderColor'
             )
+            ->where('user_id','=',$userid)//ここでidで閲覧制限している
             // 表示されているカレンダーのeventのみをDBから検索して表示
             ->where('end_date', '>',$start_date)
             ->where('start_date', '<',$end_date)// AND条件
@@ -67,7 +74,6 @@ class EventController extends Controller
         $input->end_date = date("Y-m-d", strtotime("{$request->input('end_date')} +1 day"));
         $input->event_color = $request->input('event_color');
         $input->event_border_color = $request->input('event_color');
-        
         // 更新する予定をDBから探し（find）、内容が変更していたらupdated_timeを変更（fill）して、DBに保存する（save）
         $event->find($request->input('id'))->fill($input->attributesToArray())->save(); // fill()の中身はArray型が必要だが、$inputのままではコレクションが返ってきてしまうため、Array型に変換
 

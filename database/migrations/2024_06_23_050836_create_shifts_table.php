@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shift', function (Blueprint $table) {
+        Schema::create('shifts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->boolean('decide');
+            
         });
     }
 
@@ -26,6 +28,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shift');
+        Schema::dropIfExists('shifts');
     }
+    
 };

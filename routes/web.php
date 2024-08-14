@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\readerController;
+use App\Http\Controllers\ShiftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,7 @@ Route::post('/calendar/get', [EventController::class, 'get'])->name('get');//DB�
 Route::put('/calendar/update', [EventController::class, 'update'])->name('update');
 Route::delete('/calendar/delete', [EventController::class, 'delete'])->name('delete');
 
-Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');//
 
 Route::middleware(['auth', 'reader'])->group(function () {//管理者専用ルート
     Route::get('/reader', [AdminController::class, 'index'])->name('reader.index');
@@ -47,4 +48,6 @@ Route::middleware(['auth', 'reader'])->group(function () {//管理者専用ル�
     Route::post('/reader/users/{user}/update-role', [AdminController::class, 'updateUserRole'])->name('reader.users.updateRole');
 });
 
-Route::get('/calendar/', [ShiftController::class, 'shifts'])->name('shift');
+Route::get('/shift_calendar/', [ShiftController::class, 'getShift'])->name('shift');
+
+Route::get('/user/{id}', [UserController::class, 'show'])->middleware('auths');//一般ユーザー同士の閲覧制限

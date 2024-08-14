@@ -15,5 +15,10 @@ class Event extends Model
         'end_date',
         'event_color',
         'event_border_color',
-        ];
+        'user_id'
+    ];
+    
+    public function shiftEvent(){
+        return $this->hasOne(shift::class);
+    }
 }

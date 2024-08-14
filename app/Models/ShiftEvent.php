@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Shift extends Model
+class ShiftEvent extends Model
 {
     use HasFactory;
-    protected $fillable = ['use_id','name','start_date','end_date'];
+    protected $fillable = [
+        'use_id','name',
+        'start_date',
+        'end_date'
+    ];
     
     public function user()
     {

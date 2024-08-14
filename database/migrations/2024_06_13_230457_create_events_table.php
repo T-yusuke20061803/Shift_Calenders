@@ -22,6 +22,7 @@ return new class extends Migration
         $table->string('event_color')->comment('背景色');
         $table->string('event_border_color')->comment('色分け');
         $table->timestamps();
+        $table->foreignId('user_id')->constrained();
     });
     }
     /**

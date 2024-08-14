@@ -155,7 +155,7 @@ const calendarShift = new Calendar(calendarElShift, {
     events: function(info, successCallback, failureCallback){// eventsはページが切り替わるたびに実行される
         // axiosでLaravelの予定取得処理を呼び出す
         axios
-            .post('/calendar/getShift', {  
+            .post('/calendar/madeShift', {  
                 // 現在カレンダーが表示している日付の期間(1月ならば、start_date=1月1日、end_date=1月31日となる)
                     start_date: info.start.valueOf(),
                     end_date: info.end.valueOf(),
@@ -194,7 +194,19 @@ calendarRegular.render();
 window.toggleCalenfar = function(){
     
     var button = document.getElementById('botton1');
-    document.getElementById('modal-add').style.display='none';
+    if(calendarElRegular.style.display === 'none'){
+        calendarElRegular.style.display = 'block';
+        calendarElRegular.style.display = 'none';
+        calendarRegular.render();
+        button.innerText = 'シフト用カレンダーへ切り替え';
+        button.setAttribute('aria-pressed', 'true');
+    }else{
+        calendarElRegular.style.display = 'none';
+        calendarElShift.style.display = 'block';
+        button.innerText = '通常用カレンダーへ切り替え';
+        button.setAttribute('aria-pressed', 'false');
+    }
+};
 
 //新規予定追加のモーダルを閉鎖
 window.closeAddModel = function(){

@@ -40,7 +40,7 @@
                         <option value="purple">紫</option>
                         <option value="orange">オレンジ</option>
                     </select>
-                   <button type="button" onclick="closeAddModel()">キャンセル</button>
+                    <button type="button" onclick="closeAddModel()">キャンセル</button>
                     <button type="submit">決定</button>
                 </form>
             </div>

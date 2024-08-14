@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\Shift;
 
 class ShiftController extends Controller
 {
@@ -17,14 +18,14 @@ class ShiftController extends Controller
         $shift->name = $request->input('name');
         $shift->save();
     }
-    public function getShift(Request $request)
+    public function getShift(Request $request, Shift $sfiht)
     {
         //カレンダーの表示期間
         $start_date = date('Y-m-d', $request->input('start_date') / 1000);
         $end_date = date('Y-m-d', $request->input('end_date') / 1000);
         //登録処理
         return Shift::query()
-            ->with('user')
+            //->with('user')
             ->select(
                 'start_date as start',
                 'end_date as end',
@@ -35,7 +36,7 @@ class ShiftController extends Controller
             ->where('start_date', '>',$end_date)
             ->get();
     }
-    public function update(Request $request, Shift $event)
+    public function update(Request $request, Event $event)
     {
         
     // 日付に変換。JavaScriptのタイムスタンプはミリ秒なので秒に変換
@@ -44,8 +45,4 @@ class ShiftController extends Controller
         $shift->save();
     }
     
-    public function up(Request $request, Shift $event)
-    {
-        
-    }
 }
